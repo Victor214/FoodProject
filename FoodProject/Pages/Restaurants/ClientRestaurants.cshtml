@@ -1,0 +1,56 @@
+﻿@page
+@model FoodProject.Pages.Restaurants.ClientRestaurantsModel
+@{
+    ViewData["Title"] = "ClientRestaurants";
+}
+
+<h2>Client Restaurants</h2>
+
+<table class="table" id="restaurants">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Cuisine</th>
+        </tr>
+    </thead>
+</table>
+
+@section Scripts {
+
+    <environment include="Development">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+    </environment>
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.25/datatables.min.js"></script>
+    -->
+
+    <script>
+        $(function () {
+            var cuisines = ["Unknown", "Mexican", "Italian", "Indian"]
+
+            $.ajax("/api/restaurants/",
+                { method: "get" })
+                .then(function (response) {
+                    $('#restaurants').DataTable({
+                        data: response,
+                        columns: [
+                            { "data": "name" },
+                            { "data": "location" },
+                            { "data": "cuisine", "render": 
+                                function (data) {
+                                    return cuisines[data];
+                                }
+                            }
+                        ]
+                    });
+                });
+        });
+    </script>
+}

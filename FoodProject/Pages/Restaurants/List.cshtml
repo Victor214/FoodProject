@@ -1,0 +1,32 @@
+﻿@page
+@model FoodProject.Pages.Restaurants.ListModel
+@{
+    ViewData["Title"] = "Restaurants";
+}
+
+<h1>Restaurants</h1>
+
+<!-- Doesn't need an 'action' parameter because we intend on returning this information to this same page. -->
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" class="form-control" asp-for="SearchTerm" />
+            <span class="input-group-btn">
+                <button class="btn btn-dark">
+                    <i class="fas fa-search"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+@foreach (var restaurant in Model.Restaurants) {
+    // Similar to Java's Include?
+    <partial name="_Summary" model="restaurant" />
+}
+
+<a asp-page="./Edit" class="btn btn-primary">Add new</a>
+
+@section footer {
+    <div>@Model.Message</div>
+}
